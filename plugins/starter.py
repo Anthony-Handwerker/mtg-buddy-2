@@ -1,12 +1,14 @@
 import time
 import re
 import random
+import string
 import logging
 import datetime
 
 crontable = []
 outputs = []
 attachments = []
+current_raid = ""
 raid_name = ""
 raid_level = 0
 raid_size = 0
@@ -19,9 +21,9 @@ typing_sleep = 0
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
 help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
     "",
-    "`!raid new [name] [lvl] [size] [mm-dd]` to schedule a new raid.",
-    "`!raid player [username] [DPS/Heal/Tank]` to add a player to the raid roster.",
-    "`!raid time [username] [start] [end]` to set a player's available times, in 24-hour format.",
+    "`!raid new [name] [lvl] [size] [mm/dd]` to schedule a new raid.",
+    "`!raid player [username] [DPS Level] [Tank Level] [Healer Level]` to add a player to the raid roster.",
+    "`!raid register [username] [start] [end]` to set a player's available times, in 24-hour format.",
     "`@secraidtary` to get a summary of the current raid.",
 	"`!raid reset` to clear raid information.",
     "`!raid help` to see this again.")
@@ -63,6 +65,17 @@ def get_roles(player):
         roles += 'Tank'
     return roles
 
+def process_quoted(s):
+    while 1:
+        pos1 = string.find(s,'"')
+        if pos1 == -1:
+            break
+        pos2 = string.find(s,'"',pos1 + 1)
+        substr = s[pos1+1:pos2]
+        string.replace(substr, ' ', '^')
+        s = s[:pos1] + substr + s[pos2+1:]
+    return s
+
 def process_message(data):
     global raid_name
     global raid_date
@@ -72,8 +85,13 @@ def process_message(data):
 
     if secraidtary_new.match(data['text']):
         try:
-            tokens = data['text'].split(' ')
+            temp_str = process_quoted(data['text'])
+
+            tokens = temp_str.split(' ')
+            tokens[2] = string.replace(tokens[2], '^', ' ')
             raid_name = tokens[2]
+
+            #shitposting code
             if raid_name == "CrystalBraves":
                 outputs.append([data['channel'], "The Crystal Braves are a well-funded and effective organization."])
                 return
@@ -84,11 +102,29 @@ def process_message(data):
             if raid_name == "Shitpost":
                 outputs.append([data['channel'], "http://i0.kym-cdn.com/photos/images/newsfeed/000/875/364/dce.jpg"])
                 return
+
+            #filter out spaces
+
+            #input checks
             raid_level = int(tokens[3])
+            if raid_level > 60:
+                outputs.append([data['channel'], "Current max level is 60, so I don't think that dungeon level is right."])
+                return
+            if raid_level < 1:
+                outputs.append([data['channel'], "If you don't want to put a limit on the dungeon, just enter 1 as the level."])
+                return
             raid_size = int(tokens[4])
-            raid_date = time.strptime(tokens[5], "%m-%d")
+            if not(raid_level in [4,8,24]):
+                outputs.append([data['channel'], "Current dungeon sizes are only 4, 8, and 24. Please try again."])
+                return
+            raid_date = time.strptime(tokens[5], "%m/%d")
+
+
+
             string_out = "Okay. I have scheduled a level {} raid for {} players on {}/{}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.tm_mon,raid_date.tm_mday,raid_name)
             outputs.append([data['channel'], string_out])
+        except ValueError:
+            outputs.append([data['channel'], "I think you entered a number or date incorrectly. Check your command and try again."])
         except:
             outputs.append([data['channel'], "I don't quite know what you meant. Try again or check `!raid help`"])
 
