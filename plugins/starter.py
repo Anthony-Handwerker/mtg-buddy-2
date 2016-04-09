@@ -3,6 +3,7 @@ import re
 import random
 import logging
 import datetime
+
 crontable = []
 outputs = []
 attachments = []
@@ -10,7 +11,7 @@ raid_name = ""
 raid_level = 0
 raid_size = 0
 players = []
-raid_date = date.today()
+raid_date = datetime.today()
 
 typing_sleep = 0
 
