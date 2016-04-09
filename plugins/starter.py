@@ -67,13 +67,14 @@ def process_message(data):
 
 def process_mention(data):
     logging.debug("process_mention:data: {}".format(data))
-    outputs.append([data['channel'], 'Hello!'])
     if raid_name == '':
+        outputs.append([data['channel'], 'Hello!'])
         outputs.append([data['channel'], 'Looks like you don\'t have any raids scheduled at the moment.'])
         return
     output = 'Alright, so here\'s how your raid on {} looks so far:'.format(raid_name)
     outputs.append([data['channel'], output])
     output = 'The dungeon is level {}; {}/{} players have signed up.'.format(raid_level, len(players), raid_size)
+    outputs.append([data['channel'], output])
 
 def build_demo_attachment(txt):
     return {
