@@ -32,6 +32,10 @@ p_bot_attach = re.compile("!raid[\s]*time")
 secraidtary_help = re.compile("!raid[\s]*help")
 
 def process_message(data):
+    global raid_name
+    global raid_date
+    global raid_level
+    global raid_size
     logging.debug("process_message:data: {}".format(data))
 
     if secraidtary_new.match(data['text']):
