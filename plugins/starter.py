@@ -2,31 +2,45 @@ import time
 import re
 import random
 import logging
+import datetime
 crontable = []
 outputs = []
 attachments = []
+raid_name = ""
+raid_level = 0
+raid_size = 0
+players = []
+raid_date = date.today()
+
 typing_sleep = 0
 
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
-help_text = "{}\n{}\n{}\n{}\n{}\n{}".format(
-    "I will respond to the following messages: ",
-    "`pybot hi` for a random greeting.",
-    "`pybot joke` for a question, typing indicator, then answer style joke.",
-    "`pybot attachment` to see a Slack attachment message.",
-    "`@<your bot's name>` to demonstrate detecting a mention.",
-    "`pybot help` to see this again.")
+help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
+    "Hello! I'm your secRaidtary! ",
+    "`!raid new [name] [lvl] [size] [mm-dd]` to schedule a new raid.",
+    "`!raid player [username] [DPS/Heal/Tank]` to add a player to the raid roster.",
+    "`!raid time [username] [start] [end]` to set a player's available times, in 24-hour format.",
+    "`@secraidtary` to get a summary of the current raid.",
+	"`!raid reset` to clear raid information.",
+    "`!raid help` to see this again.")
 
 # regular expression patterns for string matching
-p_bot_hi = re.compile("pybot[\s]*hi")
-p_bot_joke = re.compile("pybot[\s]*joke")
-p_bot_attach = re.compile("pybot[\s]*attachment")
-p_bot_help = re.compile("pybot[\s]*help")
+secraidtary_new = re.compile("!raid[\s]*new")
+p_bot_joke = re.compile("!raid[\s]*player")
+p_bot_attach = re.compile("!raid[\s]*time")
+p_bot_help = re.compile("!raid[\s]*help")
 
 def process_message(data):
     logging.debug("process_message:data: {}".format(data))
 
-    if p_bot_hi.match(data['text']):
-        outputs.append([data['channel'], "{}".format(random.choice(greetings))])
+    if secraidtary_new.match(data['text']):
+		tokens = data['text'].split(' ')
+		raid_name = tokens[2]
+		raid_level = int(tokens[3])
+		raid_size = int(tokens[4])
+		raid_date = strptime(tokens[5], "%b-%d")
+		string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date,raid_name)
+        outputs.append([data['channel'], string_out])
 
     elif p_bot_joke.match(data['text']):
         outputs.append([data['channel'], "Why did the python cross the road?"])
