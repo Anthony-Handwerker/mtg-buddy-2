@@ -41,9 +41,9 @@ def get_times():
     return [s_time, e_time]
 
 def get_roles2():
-    DPS_only = [player['name'] for player in players if player['DPS'] and not player['Healer'] and not player['Tank']]
-    Heal_only = [player['name'] for player in players if not player['DPS'] and player['Healer'] and not player['Tank']]
-    Tank_only = [player['name'] for player in players if not player['DPS'] and not player['Healer'] and player['Tank']]
+    DPS_only = [player['name'] for player in players if player['dps'] and not player['healer'] and not player['tank']]
+    Heal_only = [player['name'] for player in players if not player['dps'] and player['healer'] and not player['tank']]
+    Tank_only = [player['name'] for player in players if not player['dps'] and not player['healer'] and player['tank']]
     DPS_needed = raid_size/2 - len(DPS_only)
     Heal_needed = raid_size/4 - len(Heal_only)
     Tank_needed = raid_size/4 - len(Tank_only)
