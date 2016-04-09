@@ -29,7 +29,7 @@ help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
 secraidtary_new = re.compile("!raid[\s]*new")
 p_bot_joke = re.compile("!raid[\s]*player")
 p_bot_attach = re.compile("!raid[\s]*time")
-p_bot_help = re.compile("!raid[\s]*help")
+secraidtary_help = re.compile("!raid[\s]*help")
 
 def process_message(data):
     logging.debug("process_message:data: {}".format(data))
@@ -40,7 +40,7 @@ def process_message(data):
         raid_level = int(tokens[3])
         raid_size = int(tokens[4])
         raid_date = time.strptime(tokens[5], "%m-%d")
-        string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date,raid_name)
+        string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.isoformat(),raid_name)
         outputs.append([data['channel'], string_out])
 
     elif p_bot_joke.match(data['text']):
@@ -52,7 +52,7 @@ def process_message(data):
         txt = "Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots."
         attachments.append([data['channel'], txt, build_demo_attachment(txt)])
 
-    elif p_bot_help.match(data['text']):
+    elif secraidtary_help.match(data['text']):
         outputs.append([data['channel'], "{}".format(help_text)])
 
     elif data['text'].startswith("pybot"):
@@ -63,7 +63,13 @@ def process_message(data):
 
 def process_mention(data):
     logging.debug("process_mention:data: {}".format(data))
-    outputs.append([data['channel'], "You really do care about me. :heart:"])
+    outputs.append([data['channel'], 'Hello!'])
+    if raid_name == '':
+        outputs.append([data['channel'], 'Looks like you don\'t have any raids scheduled at the moment.'])
+        return
+    output = 'Alright, so here\'s how your raid on {} looks so far:'.format(raid_name)
+    outputs.append([data['channel'], output])
+    output = 'The dungeon is level {}; {}/{} players have signed up.'.format(raid_level, len(players), raid_size)
 
 def build_demo_attachment(txt):
     return {
