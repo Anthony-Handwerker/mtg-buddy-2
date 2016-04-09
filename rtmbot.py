@@ -84,20 +84,20 @@ class RtmBot(object):
                     else:
                         channel.send_message("{}".format(message))
                         limiter = True
-            for attachment in plugin.do_attachment():
-                channel = self.slack_client.server.channels.find(attachment[0])
-                if channel != None and attachment[1] != None:
-                    attachments = []
-                    if attachment != None and attachment[2] != None:
-                        attachments.append(attachment[2])
-                    attachments_json = json.dumps(attachments)
-                    resp = self.slack_client.api_call("chat.postMessage",
-                        text="{}".format(attachment[1]),
-                        channel="{}".format(channel.id),
-                        as_user="true",
-                        attachments=attachments_json,
-                    )
-                    logging.debug(resp)
+#            for attachment in plugin.do_attachment():
+#                channel = self.slack_client.server.channels.find(attachment[0])
+#                if channel != None and attachment[1] != None:
+#                    attachments = []
+#                    if attachment != None and attachment[2] != None:
+#                        attachments.append(attachment[2])
+#                    attachments_json = json.dumps(attachments)
+#                    resp = self.slack_client.api_call("chat.postMessage",
+#                        text="{}".format(attachment[1]),
+#                        channel="{}".format(channel.id),
+#                        as_user="true",
+#                        attachments=attachments_json,
+#                    )
+#                    logging.debug(resp)
     def crons(self):
         for plugin in self.bot_plugins:
             plugin.do_jobs()
