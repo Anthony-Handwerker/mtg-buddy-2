@@ -40,7 +40,7 @@ def process_message(data):
         raid_level = int(tokens[3])
         raid_size = int(tokens[4])
         raid_date = time.strptime(tokens[5], "%m-%d")
-        string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.isoformat(),raid_name)
+        string_out = "Okay. I have scheduled a level {} raid for {} players on {}/{}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.tm_mon,raid_date.tm_mday,raid_name)
         outputs.append([data['channel'], string_out])
 
     elif p_bot_joke.match(data['text']):
