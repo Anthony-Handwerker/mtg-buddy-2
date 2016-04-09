@@ -28,7 +28,7 @@ help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
 # regular expression patterns for string matching
 secraidtary_new = re.compile("!raid[\s]*new")
 secraidtary_player = re.compile("!raid[\s]*player")
-p_bot_attach = re.compile("!raid[\s]*time")
+secraidtary_time = re.compile("!raid[\s]*time")
 secraidtary_help = re.compile("!raid[\s]*help")
 
 def get_roles(player):
@@ -72,9 +72,23 @@ def process_message(data):
         players.append(player)
         outputs.append([data['channel'], output])
 
-    elif p_bot_attach.match(data['text']):
-        txt = "Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots."
-        attachments.append([data['channel'], txt, build_demo_attachment(txt)])
+    elif secraidtary_time.match(data['text']):
+        tokens = data['text'].split(' ')
+        player_name = tokens[2]
+        player_start = tokens[3]
+        player_stop = tokens[4]
+        t_start = time.strptime(player_start, "%H:%M")
+        t_stop = time.strptime(player_stop, "%H:%M")
+        for i in range(0, len(players)):
+            player = players[i]
+            if player['name'] == player_name:
+                players.remove(player)
+                player['start'] = t_start
+                player['end'] = t_stop
+                out = "Okay, {}. You have set yourself as available from {}:{} to {}:{}.".format(player_name, t_start.tm_hour, t_start.tm_min, t_stop.tm_hour, t_start.tm_min)
+                outputs.append([data['channel'], out])
+                return
+        attachments.append([data['channel'], "It looks like you haven't registered your character. Please use `!raid player` first."])
 
     elif secraidtary_help.match(data['text']):
         outputs.append([data['channel'], "{}".format(help_text)])
