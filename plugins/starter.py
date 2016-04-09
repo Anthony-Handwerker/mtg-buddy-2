@@ -11,6 +11,7 @@ raid_name = ""
 raid_level = 0
 raid_size = 0
 players = []
+reset = 0
 raid_date = datetime.date.today()
 
 typing_sleep = 0
@@ -30,6 +31,23 @@ secraidtary_new = re.compile("!raid[\s]*new")
 secraidtary_player = re.compile("!raid[\s]*player")
 secraidtary_time = re.compile("!raid[\s]*time")
 secraidtary_help = re.compile("!raid[\s]*help")
+secraidtary_reset = re.compile("!raid[\s]*reset")
+
+def get_times():
+    s_times = [player['start'] for player in players]
+    e_times = [player['end'] for player in players]
+    s_time = max(s_times)
+    e_time = min(e_times)
+    return [s_time, e_time]
+
+def get_roles():
+    DPS_only = [player['name'] for player in players if player['DPS'] and not player['Healer'] and not player['Tank']]
+    Heal_only = [player['name'] for player in players if not player['DPS'] and player['Healer'] and not player['Tank']]
+    Tank_only = [player['name'] for player in players if not player['DPS'] and not player['Healer'] and player['Tank']]
+    DPS_needed = raid_size/2 - len(DPS_only)
+    Heal_needed = raid_size/4 - len(Heal_only)
+    Tank_needed = raid_size/4 - len(Tank_only)
+    return [DPS_needed, Heal_needed, Tank_needed]
 
 def get_roles(player):
     roles = ''
@@ -85,6 +103,7 @@ def process_message(data):
                 players.remove(player)
                 player['start'] = t_start
                 player['end'] = t_stop
+                players.append(player)
                 out = "Okay, {}. You have set yourself as available from {}:{} to {}:{}.".format(player_name, t_start.tm_hour, t_start.tm_min, t_stop.tm_hour, t_start.tm_min)
                 outputs.append([data['channel'], out])
                 return
@@ -93,11 +112,20 @@ def process_message(data):
     elif secraidtary_help.match(data['text']):
         outputs.append([data['channel'], "{}".format(help_text)])
 
-    elif data['text'].startswith("pybot"):
+    elif secraidtary_reset.match(data['text']):
+        global raid_name, raid_level, raid_date, raid_size, players
+        raid_name = ""
+        raid_level = 0
+        raid_date = datetime.date.ctime(0)
+        raid_size = 0
+        players = []
+        outputs.append([data['channel'], "Raid data cleared!"])
+
+    elif data['text'].startswith("!raid"):
         outputs.append([data['channel'], "I'm sorry, I don't know how to: `{}`".format(data['text'])])
 
     elif data['channel'].startswith("D"):  # direct message channel to the bot
-        outputs.append([data['channel'], "Hello, I'm the BeepBoop python starter bot.\n{}".format(help_text)])
+        outputs.append([data['channel'], "{}".format(help_text)])
 
 def process_mention(data):
     logging.debug("process_mention:data: {}".format(data))
@@ -105,7 +133,7 @@ def process_mention(data):
         outputs.append([data['channel'], 'Hello!'])
         outputs.append([data['channel'], 'Looks like you don\'t have any raids scheduled at the moment.'])
         return
-    output = 'Alright, so here\'s how your raid on {} looks so far:'.format(raid_name)
+    output = 'Alright, so here\'s how your {} raid on {}/{} looks so far:'.format(raid_name, raid_date._month, raid_date._day)
     outputs.append([data['channel'], output])
     output = 'The dungeon is level {}; {}/{} players have signed up.'.format(raid_level, len(players), raid_size)
     outputs.append([data['channel'], output])
@@ -113,16 +141,17 @@ def process_mention(data):
         return
     outputs.append([data['channel'], "Here's the player list:"])
     for player in players:
-        output = "{}({})".format(player['name'], get_roles(player))
-        outputs.append([data['channel'], output])
+        output = "{}({})\n".format(player['name'], get_roles(player))
+    outputs.append([data['channel'], output])
+    times = get_times()
+    if(times[0] > times[1]):
+        outputs.append([data['channel'],"Unfortunately, there is no time where everyone is available."])
+        return
+    output = "Everyone is available between {}:{} and {}:{}".format(times[0].tm_hour, times[0].tm_min, times[1].tm_hour, times[0].tm_min)
+    outputs.append([data['channel'], output])
+    roles = get_roles()
+    output = "Players with more than one role, the party needs {} more DPS, {} more healer(s), and {} more tank(s).".format(roles[0], roles[1], roles[2])
+    outputs.append([data['channel'], output])
+#    outputs.append([data['channel'], "Once that's set, you're all ready to go!"])
 
-def build_demo_attachment(txt):
-    return {
-        "pretext" : "We bring bots to life. :sunglasses: :thumbsup:",
-		"title" : "Host, deploy and share your bot in seconds.",
-		"title_link" : "https://beepboophq.com/",
-		"text" : txt,
-		"fallback" : txt,
-		"image_url" : "https://storage.googleapis.com/beepboophq/_assets/bot-1.22f6fb.png",
-		"color" : "#7CD197",
-    }
+
