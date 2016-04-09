@@ -40,7 +40,7 @@ def get_times():
     e_time = min(e_times)
     return [s_time, e_time]
 
-def get_roles():
+def get_roles2():
     DPS_only = [player['name'] for player in players if player['DPS'] and not player['Healer'] and not player['Tank']]
     Heal_only = [player['name'] for player in players if not player['DPS'] and player['Healer'] and not player['Tank']]
     Tank_only = [player['name'] for player in players if not player['DPS'] and not player['Healer'] and player['Tank']]
@@ -149,7 +149,7 @@ def process_mention(data):
         return
     output = "Everyone is available between {}:{} and {}:{}".format(times[0].tm_hour, times[0].tm_min, times[1].tm_hour, times[0].tm_min)
     outputs.append([data['channel'], output])
-    roles = get_roles()
+    roles = get_roles2()
     output = "Players with more than one role, the party needs {} more DPS, {} more healer(s), and {} more tank(s).".format(roles[0], roles[1], roles[2])
     outputs.append([data['channel'], output])
 #    outputs.append([data['channel'], "Once that's set, you're all ready to go!"])
