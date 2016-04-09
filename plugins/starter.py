@@ -11,14 +11,14 @@ raid_name = ""
 raid_level = 0
 raid_size = 0
 players = []
-reset = 0
+intro = 0
 raid_date = datetime.date.today()
 
 typing_sleep = 0
 
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
 help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
-    "Hello! I'm your secRaidtary! ",
+    "",
     "`!raid new [name] [lvl] [size] [mm-dd]` to schedule a new raid.",
     "`!raid player [username] [DPS/Heal/Tank]` to add a player to the raid roster.",
     "`!raid time [username] [start] [end]` to set a player's available times, in 24-hour format.",
@@ -129,6 +129,9 @@ def process_message(data):
 
 def process_mention(data):
     logging.debug("process_mention:data: {}".format(data))
+    if "Introduce" in data['text'] and intro == 0:
+        outputs.append([data['channel'], "Hello, everyone! I'm your new secRaidtary!\nI'll track when raids are planned and who's participating, so you know when everyone's okay to go!\nHere's a list of the commands you can use:"])
+        outputs.append([data['channel'],help_text])
     if raid_name == '':
         outputs.append([data['channel'], 'Hello!'])
         outputs.append([data['channel'], 'Looks like you don\'t have any raids scheduled at the moment.'])
@@ -140,6 +143,7 @@ def process_mention(data):
     if len(players) == 0:
         return
     outputs.append([data['channel'], "Here's the player list:"])
+    output = ""
     for player in players:
         output += "{}({})\n".format(player['name'], get_roles(player))
     outputs.append([data['channel'], output])
