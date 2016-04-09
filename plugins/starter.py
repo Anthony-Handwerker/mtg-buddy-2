@@ -27,9 +27,23 @@ help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
 
 # regular expression patterns for string matching
 secraidtary_new = re.compile("!raid[\s]*new")
-p_bot_joke = re.compile("!raid[\s]*player")
+secraidtary_player = re.compile("!raid[\s]*player")
 p_bot_attach = re.compile("!raid[\s]*time")
 secraidtary_help = re.compile("!raid[\s]*help")
+
+def get_roles(player):
+    roles = ''
+    if player['dps']:
+        roles += 'DPS'
+    if player['healer']:
+        if roles != '':
+            roles += '/'
+        roles += 'Healer'
+    if player['tank']:
+        if roles != '':
+            roles += '/'
+        roles += 'Tank'
+    return roles
 
 def process_message(data):
     global raid_name
@@ -47,10 +61,16 @@ def process_message(data):
         string_out = "Okay. I have scheduled a level {} raid for {} players on {}/{}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.tm_mon,raid_date.tm_mday,raid_name)
         outputs.append([data['channel'], string_out])
 
-    elif p_bot_joke.match(data['text']):
-        outputs.append([data['channel'], "Why did the python cross the road?"])
-        outputs.append([data['channel'], "__typing__", 5])
-        outputs.append([data['channel'], "To eat the chicken on the other side! :laughing:"])
+    elif secraidtary_player.match(data['text']):
+        tokens = data['text'].split(' ')
+        player_name = tokens[2]
+        player_roles = tokens[3]
+        player = {'name': player_name, 'dps': 'DPS' in tokens[3], 'healer': 'Heal' in tokens[3], 'tank': 'Tank' in tokens[3],
+                  'start': time.ctime(0), 'end': time.ctime(0)}
+
+        output = "Okay, {} has been registered as {}.".format(player_name, get_roles(player))
+        players.append(player)
+        outputs.append([data['channel'], output])
 
     elif p_bot_attach.match(data['text']):
         txt = "Beep Beep Boop is a ridiculously simple hosting platform for your Slackbots."
@@ -75,6 +95,12 @@ def process_mention(data):
     outputs.append([data['channel'], output])
     output = 'The dungeon is level {}; {}/{} players have signed up.'.format(raid_level, len(players), raid_size)
     outputs.append([data['channel'], output])
+    if len(players) == 0:
+        return
+    outputs.append([data['channel'], "Here's the player list:"])
+    for player in players:
+        output = "{}({})".format(player['name'], get_roles(player))
+        outputs.append([data['channel'], output])
 
 def build_demo_attachment(txt):
     return {
