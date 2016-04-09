@@ -39,7 +39,7 @@ def process_message(data):
         raid_name = tokens[2]
         raid_level = int(tokens[3])
         raid_size = int(tokens[4])
-        raid_date = time.strptime(tokens[5], "%b-%d")
+        raid_date = time.strptime(tokens[5], "%m-%d")
         string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date,raid_name)
         outputs.append([data['channel'], string_out])
 
