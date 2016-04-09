@@ -34,12 +34,12 @@ def process_message(data):
     logging.debug("process_message:data: {}".format(data))
 
     if secraidtary_new.match(data['text']):
-		tokens = data['text'].split(' ')
-		raid_name = tokens[2]
-		raid_level = int(tokens[3])
-		raid_size = int(tokens[4])
-		raid_date = strptime(tokens[5], "%b-%d")
-		string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date,raid_name)
+        tokens = data['text'].split(' ')
+        raid_name = tokens[2]
+        raid_level = int(tokens[3])
+        raid_size = int(tokens[4])
+        raid_date = time.strptime(tokens[5], "%b-%d")
+        string_out = "Okay. I have scheduled a level {} raid for {} players on {}.\nYou will be running {}.".format(raid_level,raid_size,raid_date,raid_name)
         outputs.append([data['channel'], string_out])
 
     elif p_bot_joke.match(data['text']):
