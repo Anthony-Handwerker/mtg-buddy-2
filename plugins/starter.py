@@ -88,7 +88,7 @@ def process_message(data):
                 out = "Okay, {}. You have set yourself as available from {}:{} to {}:{}.".format(player_name, t_start.tm_hour, t_start.tm_min, t_stop.tm_hour, t_start.tm_min)
                 outputs.append([data['channel'], out])
                 return
-        attachments.append([data['channel'], "It looks like you haven't registered your character. Please use `!raid player` first."])
+        outputs.append([data['channel'], "It looks like you haven't registered your character. Please use `!raid player` first."])
 
     elif secraidtary_help.match(data['text']):
         outputs.append([data['channel'], "{}".format(help_text)])
