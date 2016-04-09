@@ -81,7 +81,6 @@ def process_message(data):
                 outputs.append([data['channel'], "Why are you running this dungeon? Why?"])
             if raid_name == "DutyRoulette":
                 outputs.append([data['channel'], "http://i3.kym-cdn.com/photos/images/newsfeed/000/959/160/e65.jpg"])
-                return
             if raid_name == "Shitpost":
                 outputs.append([data['channel'], "http://i0.kym-cdn.com/photos/images/newsfeed/000/875/364/dce.jpg"])
                 return
