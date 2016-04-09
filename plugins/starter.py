@@ -141,7 +141,7 @@ def process_mention(data):
         return
     outputs.append([data['channel'], "Here's the player list:"])
     for player in players:
-        output = "{}({})\n".format(player['name'], get_roles(player))
+        output += "{}({})\n".format(player['name'], get_roles(player))
     outputs.append([data['channel'], output])
     times = get_times()
     if(times[0] > times[1]):
