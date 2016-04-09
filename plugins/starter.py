@@ -72,7 +72,7 @@ def process_quoted(s):
             break
         pos2 = string.find(s,'"',pos1 + 1)
         substr = s[pos1+1:pos2]
-        string.replace(substr, ' ', '^')
+        substr = string.replace(substr, ' ', '^')
         s = s[:pos1] + substr + s[pos2+1:]
     return s
 
@@ -86,6 +86,7 @@ def process_message(data):
     if secraidtary_new.match(data['text']):
         try:
             temp_str = process_quoted(data['text'])
+            outputs..append([data['channel'], temp_str])
 
             tokens = temp_str.split(' ')
             tokens[2] = string.replace(tokens[2], '^', ' ')
