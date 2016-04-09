@@ -11,7 +11,7 @@ raid_name = ""
 raid_level = 0
 raid_size = 0
 players = []
-raid_date = datetime.today()
+raid_date = datetime.date.today()
 
 typing_sleep = 0
 
