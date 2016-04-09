@@ -86,7 +86,7 @@ def process_message(data):
     if secraidtary_new.match(data['text']):
         try:
             temp_str = process_quoted(data['text'])
-            outputs..append([data['channel'], temp_str])
+            #outputs.append([data['channel'], temp_str])
 
             tokens = temp_str.split(' ')
             tokens[2] = string.replace(tokens[2], '^', ' ')
