@@ -133,7 +133,7 @@ def process_mention(data):
         outputs.append([data['channel'], 'Hello!'])
         outputs.append([data['channel'], 'Looks like you don\'t have any raids scheduled at the moment.'])
         return
-    output = 'Alright, so here\'s how your {} raid on {} looks so far:'.format(raid_name, raid_date.isoformat())
+    output = 'Alright, so here\'s how your {} raid on {}/{} looks so far:'.format(raid_name, raid_date.tm_mon,raid_date.tm_mday)
     outputs.append([data['channel'], output])
     output = 'The dungeon is level {}; {}/{} players have signed up.'.format(raid_level, len(players), raid_size)
     outputs.append([data['channel'], output])
