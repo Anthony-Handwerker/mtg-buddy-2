@@ -12,19 +12,23 @@ current_raid = ""
 raid_name = ""
 raid_level = 0
 raid_size = 0
-players = []
+players = {}
+raids = {}
 intro = 0
 raid_date = datetime.date.today()
 
 typing_sleep = 0
 
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
-help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
+help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
     "",
     "`!raid new [name] [lvl] [size] [mm/dd]` to schedule a new raid.",
     "`!raid player [username] [DPS Level] [Tank Level] [Healer Level]` to add a player to the raid roster.",
     "`!raid register [username] [start] [end]` to set a player's available times, in 24-hour format.",
-    "`@secraidtary` to get a summary of the current raid.",
+    "`@secraidtary` to get a summary of the next raid.",
+    "`!raid delete [player/raid] [name]` to remove a player or raid from the register.",
+    "`!raid levelup [name] [d/t/h] {new-lvl}` to increase the level of a character on the roster.",
+    "`!raid lookup [name]` to look up information on a raid or player."
 	"`!raid reset` to clear raid information.",
     "`!raid help` to see this again.")
 
@@ -77,10 +81,6 @@ def process_quoted(s):
     return s
 
 def process_message(data):
-    global raid_name
-    global raid_date
-    global raid_level
-    global raid_size
     logging.debug("process_message:data: {}".format(data))
 
     if secraidtary_new.match(data['text']):
@@ -92,13 +92,17 @@ def process_message(data):
             tokens[2] = string.replace(tokens[2], '^', ' ')
             raid_name = tokens[2]
 
+            if raid_name in raids:
+                outputs.append([data['channel'], "This raid is already on record, please enter a different name or use `!raid delete raid`"])
+                return
+
             #shitposting code
             if raid_name == "CrystalBraves":
                 outputs.append([data['channel'], "The Crystal Braves are a well-funded and effective organization."])
                 return
             if raid_name == "TotoRak" or raid_name == "ThousandMaws":
                 outputs.append([data['channel'], "Why are you running this dungeon? Why?"])
-            if raid_name == "DutyRoulette":
+            if raid_name.lower() == "dutyroulette" or raid_name.lower() == "duty roulette":
                 outputs.append([data['channel'], "http://i3.kym-cdn.com/photos/images/newsfeed/000/959/160/e65.jpg"])
             if raid_name == "Shitpost":
                 outputs.append([data['channel'], "http://i0.kym-cdn.com/photos/images/newsfeed/000/875/364/dce.jpg"])
@@ -115,12 +119,13 @@ def process_message(data):
                 outputs.append([data['channel'], "If you don't want to put a limit on the dungeon, just enter 1 as the level."])
                 return
             raid_size = int(tokens[4])
-            if not(raid_level in [4,8,24]):
+            if not raid_size in [4,8,24]:
                 outputs.append([data['channel'], "Current dungeon sizes are only 4, 8, and 24. Please try again."])
                 return
             raid_date = time.strptime(tokens[5], "%m/%d")
 
-
+            r_data = {'level':raid_level, 'date':raid_date, 'size':raid_size, 'party':[]}
+            raids[raid_name]=r_data
 
             string_out = "Okay. I have scheduled a level {} raid for {} players on {}/{}.\nYou will be running {}.".format(raid_level,raid_size,raid_date.tm_mon,raid_date.tm_mday,raid_name)
             outputs.append([data['channel'], string_out])
@@ -131,15 +136,23 @@ def process_message(data):
 
     elif secraidtary_player.match(data['text']):
         try:
-            tokens = data['text'].split(' ')
+            temp_str = process_quoted(data['text'])
+            tokens = temp_str.split(' ')
+            tokens[2] = string.replace(tokens[2], '^', ' ')
             player_name = tokens[2]
-            player_roles = tokens[3]
-            player = {'name': player_name, 'dps': 'DPS' in tokens[3], 'healer': 'Heal' in tokens[3], 'tank': 'Tank' in tokens[3],
-                      'start': time.ctime(0), 'end': time.ctime(0)}
 
-            output = "Okay, {} has been registered as {}.".format(player_name, get_roles(player))
-            players.append(player)
+            if player_name in players:
+                outputs.append([data['channel'], "This player is already on record; please enter a different name, use `!raid levelup`, or use `!raid delete raid`"])
+                return
+
+            player_roles = tokens[3]
+            player = {'dps': int(tokens[3]), 'healer': int(tokens[4]), 'tank': int(tokens[5])}
+
+            output = "Okay, {} has been registered as a level {} DPS, a level {} healer, and a level {} tank.".format(player_name, player['dps'], player['healer'], player['tank'])
+            players[player_name] = player
             outputs.append([data['channel'], output])
+        except ValueError:
+            outputs.append([data['channel'], "I think you entered a number incorrectly. Check your command and try again."])
         except:
             outputs.append([data['channel'], "I don't quite know what you meant. Try again or check `!raid help`"])
 
