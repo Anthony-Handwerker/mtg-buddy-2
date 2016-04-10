@@ -20,15 +20,14 @@ raid_date = datetime.date.today()
 typing_sleep = 0
 
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
-help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
-    "",
+help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
     "`!raid new [name] [lvl] [size] [mm/dd]` to schedule a new raid.",
     "`!raid player [username] [DPS Level] [Tank Level] [Healer Level]` to add a player to the raid roster.",
     "`!raid register [username] [start] [end]` to set a player's available times, in 24-hour format.",
     "`@secraidtary` to get a summary of the next raid.",
     "`!raid delete [player/raid] [name]` to remove a player or raid from the register.",
     "`!raid levelup [name] [d/t/h] {new-lvl}` to increase the level of a character on the roster.",
-    "`!raid lookup [name]` to look up information on a raid or player."
+    "`!raid lookup [name]` to look up information on a raid or player.",
 	"`!raid reset` to clear raid information.",
     "`!raid help` to see this again.")
 
