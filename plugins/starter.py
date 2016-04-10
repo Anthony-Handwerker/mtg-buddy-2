@@ -20,7 +20,7 @@ raid_date = datetime.date.today()
 typing_sleep = 0
 
 greetings = ['Hi friend!', 'Hello there.', 'Howdy!', 'Wazzzup!!!', 'Hi!', 'Hey.']
-help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
+help_text = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
     "",
     "`!raid new [name] [lvl] [size] [mm/dd]` to schedule a new raid.",
     "`!raid player [username] [DPS Level] [Tank Level] [Healer Level]` to add a player to the raid roster.",
