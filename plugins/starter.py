@@ -87,6 +87,8 @@ def process_message(data):
         s1 = data['text']
 
         #outputs.append([data['channel'], temp_str])
+        if s1.find("[[") == 0:
+            s1 = "A"+s1
 
         tokens = s1.split('[[')
 
@@ -94,7 +96,7 @@ def process_message(data):
             if tokens[i].find("]]") > -1:
                 card_names = tokens[i].split(']]')
                 card_name = card_names[0]
-                card_name = string.replace(str(tokens[1]), '^', '+')
+                card_name = string.replace(card_name, ' ', '+')
 
                 response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
 
