@@ -85,10 +85,12 @@ def process_message(data):
 
     if mtg_new.match(data['text']):
         try:
+            outputs.append([data['channel'],data['text']])
             temp_str = process_quoted(data['text'])
             #outputs.append([data['channel'], temp_str])
-
+            outputs.append([data['channel'],temp_str])
             tokens = temp_str.split(' ')
+            outputs.append([data['channel'],str(tokens)])
             tokens[2] = string.replace(tokens[2], '^', '+')
             card_name = tokens[2]
             outputs.append([data['channel'],card_name])
