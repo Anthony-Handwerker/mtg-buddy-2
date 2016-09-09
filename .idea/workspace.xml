@@ -29,7 +29,7 @@
       <file leaf-file-name="rtmbot.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rtmbot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.4" vertical-offset="3399" max-vertical-offset="4114">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3374" max-vertical-offset="4114">
               <caret line="227" column="25" selection-start-line="227" selection-start-column="25" selection-end-line="227" selection-end-column="25" />
               <folding />
             </state>
@@ -39,8 +39,8 @@
       <file leaf-file-name="starter.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plugins/starter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5061898" vertical-offset="1145" max-vertical-offset="2091">
-              <caret line="89" column="34" selection-start-line="89" selection-start-column="34" selection-end-line="89" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.6726272" vertical-offset="1143" max-vertical-offset="2142">
+              <caret line="96" column="52" selection-start-line="96" selection-start-column="52" selection-end-line="96" selection-end-column="52" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -190,7 +190,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/rtmbot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.4" vertical-offset="3399" max-vertical-offset="4114">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3374" max-vertical-offset="4114">
           <caret line="227" column="25" selection-start-line="227" selection-start-column="25" selection-end-line="227" selection-end-column="25" />
           <folding />
         </state>
@@ -198,8 +198,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/plugins/starter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5061898" vertical-offset="1145" max-vertical-offset="2091">
-          <caret line="89" column="34" selection-start-line="89" selection-start-column="34" selection-end-line="89" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.6726272" vertical-offset="1143" max-vertical-offset="2142">
+          <caret line="96" column="52" selection-start-line="96" selection-start-column="52" selection-end-line="96" selection-end-column="52" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

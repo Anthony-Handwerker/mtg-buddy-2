@@ -83,29 +83,32 @@ def process_quoted(s):
 def process_message(data):
     logging.debug("process_message:data: {}".format(data))
 
-    if mtg_new.match(data['text']):
-        try:
+    try:
+        s1 = data['text']
 
-            temp_str = process_quoted(data['text'])
-            #outputs.append([data['channel'], temp_str])
+        #outputs.append([data['channel'], temp_str])
 
-            tokens = temp_str.split(' ')
+        tokens = s1.split('[[')
 
-            card_name = string.replace(str(tokens[1]), '^', '+')
+        for i in range(1, len(tokens)):
+            card_names = tokens[i].split(']]')
+            if len(card_names) > 1:
+                card_name = card_names[0]
+                card_name = string.replace(str(tokens[1]), '^', '+')
 
-            response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
+                response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
 
-            html = str(response.read())
+                html = str(response.read())
 
-            start = html.find("http://magiccards.info/scans/")
-            end = html.find("\"", start)
-            outputs.append([data['channel'], html[start:end]])
+                start = html.find("http://magiccards.info/scans/")
+                end = html.find("\"", start)
+                outputs.append([data['channel'], html[start:end]])
 
 
-        except ValueError:
-            outputs.append([data['channel'], "Failure"])
-        except:
-            outputs.append([data['channel'], "Failure"])
+    except ValueError:
+        outputs.append([data['channel'], "Failure"])
+    except:
+        outputs.append([data['channel'], "Failure"])
 
 
 
