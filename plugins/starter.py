@@ -85,18 +85,18 @@ def process_message(data):
 
     if mtg_new.match(data['text']):
         try:
-            outputs.append([data['channel'],data['text']])
+
             temp_str = process_quoted(data['text'])
             #outputs.append([data['channel'], temp_str])
-            outputs.append([data['channel'],temp_str])
+
             tokens = temp_str.split(' ')
-            outputs.append([data['channel'],str(tokens)])
+
             card_name = string.replace(str(tokens[1]), '^', '+')
-            outputs.append([data['channel'],card_name])
+
             response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
-            outputs.append([data['channel'],"test"])
+
             html = str(response.read())
-            outputs.append([data['channel'],"test2"])
+
             start = html.find("http://magiccards.info/scans/")
             end = html.find("\"", start)
             outputs.append([data['channel'], html[start:end]])
