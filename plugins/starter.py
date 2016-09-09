@@ -98,13 +98,13 @@ def process_message(data):
                 card_name = card_names[0]
                 card_name = string.replace(card_name, ' ', '+')
 
-                response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
+                response = ul.urlopen("http://mtg.wtf/card?q="+card_name)
 
                 html = str(response.read())
 
-                start = html.find("http://magiccards.info/scans/")
-                end = html.find("\"", start)
-                outputs.append([data['channel'], html[start:end]])
+                start = html.find("/cards_hq/")
+                end = html.find("\'", start)
+                outputs.append([data['channel'], "http://mtg.wtf" + html[start:end]])
 
 
     except ValueError:
