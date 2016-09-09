@@ -4,7 +4,7 @@ import random
 import string
 import logging
 import datetime
-import urllib.request as ul
+import urllib as ul
 
 crontable = []
 outputs = []
