@@ -91,7 +91,7 @@ def process_message(data):
             outputs.append([data['channel'],temp_str])
             tokens = temp_str.split(' ')
             outputs.append([data['channel'],str(tokens)])
-            card_name = string.replace(str(tokens[2]), '^', '+')
+            card_name = string.replace(str(tokens[1]), '^', '+')
             outputs.append([data['channel'],card_name])
             response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
             outputs.append([data['channel'],"test"])
