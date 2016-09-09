@@ -91,8 +91,11 @@ def process_message(data):
             tokens = temp_str.split(' ')
             tokens[2] = string.replace(tokens[2], '^', '+')
             card_name = tokens[2]
+            print("Step 1")
             response = ul.urlopen("http://magiccards.info/query?q="+card_name+"&v=card&s=cname")
+            print("step 2")
             html = str(response.read())
+            print("step 3")
             start = html.find("http://magiccards.info/scans/")
             end = html.find("\"", start)
             outputs.append([data['channel'], html[start:end]])
