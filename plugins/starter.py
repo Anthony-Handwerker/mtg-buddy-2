@@ -102,8 +102,10 @@ def process_message(data):
 
                 html = str(response.read())
 
-                start = html.find("/cards_hq/")
+                start = html.find("/cards")
                 end = html.find("\'", start)
+                if end < start:
+                    continue
                 outputs.append([data['channel'], "http://mtg.wtf" + html[start:end]])
 
 
