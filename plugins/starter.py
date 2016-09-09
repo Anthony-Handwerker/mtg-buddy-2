@@ -91,8 +91,8 @@ def process_message(data):
         tokens = s1.split('[[')
 
         for i in range(1, len(tokens)):
-            card_names = tokens[i].split(']]')
-            if len(card_names) > 1:
+            if tokens[i].find("]]") > -1:
+                card_names = tokens[i].split(']]')
                 card_name = card_names[0]
                 card_name = string.replace(str(tokens[1]), '^', '+')
 
