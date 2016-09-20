@@ -32,9 +32,9 @@ def process_message(data):
             if tokens[i].find("]]") > -1:
                 card_names = tokens[i].split(']]')
                 card_name = card_names[0]
-                card_name = string.replace(card_name, ' ', '+')
-
-                response = ul.urlopen("http://mtg.wtf/card?q="+card_name)
+                url = {'q' : card_name}
+                temp = ul.urlencode(url)
+                response = ul.urlopen("http://mtg.wtf/card?"+temp)
 
                 html = str(response.read())
 
