@@ -85,7 +85,7 @@ class RtmBot(object):
                         msg = "{}".format(message)
 
                         if(len(output) >= 3):
-                            channel.send_message(msg, thread = ouput[2])
+                            channel.send_message(msg, thread = output[2])
                         else:
                             channel.send_message(msg)
                         
