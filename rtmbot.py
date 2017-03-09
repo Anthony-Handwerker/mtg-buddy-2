@@ -88,14 +88,14 @@ class RtmBot(object):
                             self.slack_client.api_call(
                                 "chat.postMessage",
                                 channel=channel,
-                                text=msg,
+                                text=message,
                                 thread_ts=output[2]
                             )
                         else:
                             self.slack_client.api_call(
                                 "chat.postMessage",
                                 channel=channel,
-                                text=msg
+                                text=message
                             )
                         limiter = True
 #            for attachment in plugin.do_attachment():
