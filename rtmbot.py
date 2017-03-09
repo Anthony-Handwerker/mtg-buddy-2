@@ -82,7 +82,9 @@ class RtmBot(object):
                         self.slack_client.server.send_to_websocket(user_typing_json)
                         time.sleep(output[2])
                     else:
-                        channel.send_message("{}".format(message))
+                        msg = "{}".format(message)
+                        msg['thread_ts'] = output[2]
+                        channel.send_message(msg)
                         limiter = True
 #            for attachment in plugin.do_attachment():
 #                channel = self.slack_client.server.channels.find(attachment[0])

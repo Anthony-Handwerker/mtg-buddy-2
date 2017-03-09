@@ -21,6 +21,7 @@ def process_message(data):
 
     try:
         s1 = data['text']
+        thread = data['thread_ts']
 
         #outputs.append([data['channel'], temp_str])
         if s1.find("[[") == 0:
@@ -42,7 +43,7 @@ def process_message(data):
                 end = html.find("\'", start)
                 if end < start:
                     continue
-                outputs.append([data['channel'], "http://mtg.wtf" + html[start:end]])
+                outputs.append([data['channel'], "http://mtg.wtf" + html[start:end], thread])
 
 
     except ValueError:
