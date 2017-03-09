@@ -83,7 +83,8 @@ class RtmBot(object):
                         time.sleep(output[2])
                     else:
                         msg = "{}".format(message)
-                        msg['thread_ts'] = output[2]
+                        msg["thread_ts"] = output[2]
+                        print(msg)
                         channel.send_message(msg)
                         limiter = True
 #            for attachment in plugin.do_attachment():
