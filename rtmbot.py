@@ -83,6 +83,7 @@ class RtmBot(object):
                         time.sleep(output[2])
                     else:
                         msg = "{}".format(message)
+                        print(msg)
                         if(len(output) >= 3):
                             msg['thread_ts'] = output[2]
                         channel.send_message(msg)
