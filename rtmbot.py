@@ -85,18 +85,10 @@ class RtmBot(object):
                         msg = "{}".format(message)
 
                         if(len(output) >= 3):
-                            self.slack_client.api_call(
-                                "chat.postMessage",
-                                channel=channel,
-                                text=message,
-                                thread_ts=output[2]
-                            )
+                            channel.send_message(msg, thread = ouput[2])
                         else:
-                            self.slack_client.api_call(
-                                "chat.postMessage",
-                                channel=channel,
-                                text=message
-                            )
+                            channel.send_message(msg)
+                        
                         limiter = True
 #            for attachment in plugin.do_attachment():
 #                channel = self.slack_client.server.channels.find(attachment[0])
