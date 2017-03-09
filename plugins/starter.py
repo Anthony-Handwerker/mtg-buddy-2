@@ -22,6 +22,7 @@ def process_message(data):
     try:
         s1 = data['text']
         thread = data['ts']
+        print(thread)
 
         #outputs.append([data['channel'], temp_str])
         if s1.find("[[") == 0:
