@@ -85,14 +85,14 @@ class RtmBot(object):
                         msg = "{}".format(message)
 
                         if(len(output) >= 3):
-                            self.slack_client(
+                            self.slack_client.api_call(
                                 "chat.postMessage",
                                 channel=channel,
                                 text=msg,
                                 thread_ts=output[2]
                             )
                         else:
-                            self.slack_client(
+                            self.slack_client.api_call(
                                 "chat.postMessage",
                                 channel=channel,
                                 text=msg
