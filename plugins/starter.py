@@ -30,6 +30,8 @@ def process_message(data):
 
         tokens = s1.split('[[')
 
+        counter = 0
+
         for i in range(1, len(tokens)):
             if tokens[i].find("]]") > -1:
                 card_names = tokens[i].split(']]')
@@ -42,9 +44,10 @@ def process_message(data):
 
                 start = html.find("/cards")
                 end = html.find("\'", start)
-                if end < start:
-                    continue
-                outputs.append([data['channel'], "http://mtg.wtf" + html[start:end], thread])
+                if end <= start or html[start:end] == "":
+                    outputs.append([data['channel'], "Could not find " + card_name, thread])
+                else:
+                    outputs.append([data['channel'], "http://mtg.wtf" + html[start:end], thread])
 
 
     except ValueError:
