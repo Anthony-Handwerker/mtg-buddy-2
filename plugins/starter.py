@@ -83,7 +83,7 @@ def process_message(data):
 
 
     except Exception, e:
-        outputs.append([data['channel'], str(e.reason)])
+        outputs.append([data['channel'], str(e.strerror)])
 
 
 
