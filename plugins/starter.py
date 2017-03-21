@@ -49,6 +49,35 @@ def process_message(data):
                 else:
                     outputs.append([data['channel'], "http://mtg.wtf" + html[start:end], thread])
 
+        if s1.find("{{") == 0:
+            s1 = "A"+s1
+
+        tokens = s1.split('{{')
+
+        counter = 0
+
+        for i in range(1, len(tokens)):
+            if tokens[i].find("}}") > -1:
+                card_names = tokens[i].split('}}')
+                card_name = card_names[0]
+                url = {'search' : card_name}
+                temp = ul.urlencode(url)
+                response = ul.urlopen("www.numotgaming.com/cards/?"+temp)
+
+                html = str(response.read())
+
+                start = html.find("http://www.numotgaming.com/cards")
+                end = html.find("\"", start)
+                if end <= start or html[start:end] == "":
+                    outputs.append([data['channel'], "Could not find " + card_name, thread])
+                else:
+                    response2 = ul.urlopen(ul.quote(html[start:end]))
+                    html = str(response2.read())
+                    start = html.find("http://www.numotgaming.com/cards/images/cards")
+                    end = html.find("\"",start)
+
+                    outputs.append([data['channel'], ul.quote(html[start:end]), thread])
+
 
     except ValueError:
         outputs.append([data['channel'], "Failure"])
