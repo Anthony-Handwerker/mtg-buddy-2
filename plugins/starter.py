@@ -68,6 +68,7 @@ def process_message(data):
 
                 start = html.find("http://www.numotgaming.com/cards")
                 end = html.find("\"", start)
+                outputs.append([data['channel'], str(start) + " " + str(end)])
                 if end <= start or html[start:end] == "":
                     outputs.append([data['channel'], "Could not find " + card_name, thread])
                 else:
