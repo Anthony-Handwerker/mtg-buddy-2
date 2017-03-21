@@ -66,18 +66,14 @@ def process_message(data):
 
                 html = str(response.read())
 
-                start = html.find("http://www.numotgaming.com/cards")
-                end = html.find("\"", start + 1)
-                outputs.append([data['channel'], str(start) + " " + str(end)])
+                start = html.find("<div class='name'>")
+                start2 = html.find(">", start + 1) + 1
+                end = html.find("<", start2)
+                outputs.append([data['channel'], str(start2) + " " + str(end)])
                 if end <= start or html[start:end] == "":
                     outputs.append([data['channel'], "Could not find " + card_name, thread])
                 else:
-                    response2 = ul.urlopen(ul.quote(html[start:end]))
-                    html = str(response2.read())
-                    start = html.find("http://www.numotgaming.com/cards/images/cards")
-                    end = html.find("\"",start + 1)
-
-                    outputs.append([data['channel'], ul.quote(html[start:end]), thread])
+                    outputs.append([data['channel'], "http://www.numotgaming.com/cards/images/cards//" + ul.quote(html[start:end]) + ".png", thread])
 
 
     except Exception, e:
