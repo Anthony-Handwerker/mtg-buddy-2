@@ -60,20 +60,7 @@ def process_message(data):
             if tokens[i].find("}}") > -1:
                 card_names = tokens[i].split('}}')
                 card_name = card_names[0]
-                url = {'search' : card_name}
-                temp = ul.urlencode(url)
-                response = ul.urlopen("http://www.numotgaming.com/cards/?"+temp)
-
-                html = str(response.read())
-
-                start = html.find("<div class='name'>")
-                start2 = html.find(">", start + 1) + 1
-                end = html.find("<", start2)
-                outputs.append([data['channel'], str(start2) + " " + str(end)])
-                if end <= start or html[start:end] == "":
-                    outputs.append([data['channel'], "Could not find " + card_name, thread])
-                else:
-                    outputs.append([data['channel'], "http://www.numotgaming.com/cards/images/cards//" + ul.quote(html[start:end]) + ".png", thread])
+                outputs.append([data['channel'], "http://www.numotgaming.com/cards/images/cards//" + ul.quote(card_name) + ".png", thread])
 
 
     except Exception, e:
