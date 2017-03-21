@@ -21,7 +21,7 @@ def process_message(data):
 
     try:
         s1 = data['text']
-        thread = data['ts']
+        thread = data.get('thread_ts', data['ts'])
         print(thread)
 
         #outputs.append([data['channel'], temp_str])
