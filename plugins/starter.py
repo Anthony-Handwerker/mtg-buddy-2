@@ -62,15 +62,12 @@ def process_message(data):
                 card_name = card_names[0]
                 url = {'search' : card_name}
                 temp = ul.urlencode(url)
-                outputs.append([data['channel'],"www.numotgaming.com/cards/?"+temp])
-                response = ul.urlopen("www.numotgaming.com/cards/?"+temp)
-                outputs.append([data['channel'],"url opened"])
+                response = ul.urlopen("http://www.numotgaming.com/cards/?"+temp)
 
                 html = str(response.read())
 
                 start = html.find("http://www.numotgaming.com/cards")
                 end = html.find("\"", start)
-                outputs.append([data['channel'], str(start) + " " + str(end)])
                 if end <= start or html[start:end] == "":
                     outputs.append([data['channel'], "Could not find " + card_name, thread])
                 else:
