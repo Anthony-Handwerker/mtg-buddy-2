@@ -55,7 +55,6 @@ def process_message(data):
         tokens = s1.split('{{')
 
         counter = 0
-        outputs.append([data['channel'], "ready to find eternal cards"])
 
         for i in range(1, len(tokens)):
             if tokens[i].find("}}") > -1:
@@ -63,7 +62,7 @@ def process_message(data):
                 card_name = card_names[0]
                 url = {'search' : card_name}
                 temp = ul.urlencode(url)
-                outputs.append([data['channel'],"about to open the url"])
+                outputs.append([data['channel'],"www.numotgaming.com/cards/?"+temp])
                 response = ul.urlopen("www.numotgaming.com/cards/?"+temp)
                 outputs.append([data['channel'],"url opened"])
 
