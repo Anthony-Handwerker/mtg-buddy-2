@@ -82,10 +82,8 @@ def process_message(data):
                     outputs.append([data['channel'], ul.quote(html[start:end]), thread])
 
 
-    except ValueError:
-        outputs.append([data['channel'], "Failure"])
-    except:
-        outputs.append([data['channel'], "Failure"])
+    except Exception, e:
+        outputs.append([data['channel'], str(e.reason)])
 
 
 
